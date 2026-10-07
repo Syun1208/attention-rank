@@ -1,0 +1,37 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,landscape,margin=12mm]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\definecolor{oursrow}{HTML}{E8F5E9}
+\begin{document}
+\begin{table*}[t]
+\centering
+\caption{HotpotQA answer accuracy (\%) of Qwen2.5-7B-Instruct under five document ordering strategies, five documents per question. Top: Table~1 of Yi et al.\ (2025). Highlighted: our C++/CUDA engine with the prompt of Figure~5 and the relevance order given by BM25 over the five candidates. Shallowest layer is the probe layer of the attention profile, numbered from 0: the paper uses the first layer, ours is the shallowest layer showing the attention basin over 397 probe prompts. $\Delta$ vs paper is ours minus the paper. Bold: best strategy in each row; underlined: second best.}
+\label{tab:reproduce}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ll|c|r|ccccc}
+\toprule
+\textbf{Method} & \textbf{Model} & \textbf{Shallowest layer} & \textbf{Questions} & \textbf{Random} & \textbf{Descending} & \textbf{Ascending} & \textbf{LIM} & \textbf{AttnRank} \\
+\midrule
+Yi et al. (2025) & Qwen2.5-7B & 0 & 7405 & 52.32 & 53.31 & \textbf{54.64} & 52.18 & \underline{54.55} \\
+\rowcolor{oursrow} Ours (C++/CUDA) & Qwen2.5-7B & 2 & 7405 & 62.34 & 62.13 & \underline{62.80} & 62.70 & \textbf{63.16} \\
+\midrule
+$\Delta$ vs paper &  &  &  & +10.02 & +8.82 & +8.16 & +10.52 & +8.61 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+\begin{table*}[t]
+\centering
+\caption{FinQA with AttnRank and Qwen2.5-7B-Instruct, 1549 examples. Each context is split into 5 contiguous chunks, the chunks are ranked by BM25 against the question and placed by the attention profile. Shallowest layer is the probe layer of the FinQA attention profile, numbered from 0. Judge columns come from GPT-4o with the FinQA alignment prompt: the score is 0 to 10 and is set to 0 when the derivation is invalid, even if the final value matches the reference. Numeric accuracy compares the extracted final value with the reference, within half a unit of the last reference decimal.}
+\label{tab:finqa}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ll|c|r|cccccc|c}
+\toprule
+\textbf{Method} & \textbf{Model} & \textbf{Shallowest layer} & \textbf{Questions} & \textbf{Judge score (0--10)} & \textbf{Score $\geq 8$ (\%)} & \textbf{Score $= 0$ (\%)} & \textbf{Invalid derivation (\%)} & \textbf{Hallucination (\%)} & \textbf{Gold suspect (\%)} & \textbf{Numeric accuracy (\%)} \\
+\midrule
+\rowcolor{oursrow} AttnRank (C++/CUDA) & Qwen2.5-7B & 4 & 1549 & 7.61 & 81.47 & 14.20 & 13.62 & 14.14 & 4.00 & 78.11 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+\end{document}

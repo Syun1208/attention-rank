@@ -1,0 +1,16 @@
+model: Qwen/Qwen2.5-7B-Instruct
+dataset: data/hotpotqa-attnrank/dataset.jsonl
+profile: profile-qwen7b-hotpotqa-fig5.json
+ordering: gold-first
+strategies: [random, descending, ascending, lim, attnrank]
+offset: 0
+questions: 0
+max_new_tokens: 32
+seed: 0
+paper_row: qwen2.5-7b
+engine:
+  device: 0
+  max_sequence: 4096
+  chat_format: plain
+  include_titles: false
+  document_separator: "\n"

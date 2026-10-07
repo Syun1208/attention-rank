@@ -1,0 +1,53 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "attnrank"
+version = "0.1.0"
+description = "AttnRank: attention-basin layer selection, attention profiling and training-free reranking on a CUDA Llama engine"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: C++",
+  "Environment :: GPU :: NVIDIA CUDA",
+  "Operating System :: POSIX :: Linux",
+]
+dependencies = ["tqdm>=4.60", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+hub = ["huggingface_hub>=0.23.0", "python-dotenv>=1.0"]
+research = ["numpy", "scipy", "matplotlib", "torch", "transformers", "huggingface_hub>=0.23.0"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+attnrank-run = "attnrank.cli:main"
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+cmake.version = ">=3.24"
+cmake.build-type = "Release"
+build-dir = "build/pip-{wheel_tag}"
+wheel.packages = ["attnrank"]
+sdist.exclude = [
+  "/build/",
+  "/outputs/",
+  "/logs/",
+  "/models/",
+  "/data/",
+  "/docs/",
+  "/profiles/",
+  "/configs/",
+  "/scripts/",
+  "/tests/",
+  "/main.py",
+  "**/__pycache__/",
+]
+
+[tool.scikit-build.cmake.define]
+ATTNRANK_BUILD_PYTHON = "ON"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

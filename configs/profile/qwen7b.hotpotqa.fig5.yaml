@@ -1,0 +1,11 @@
+model: Qwen/Qwen2.5-7B-Instruct
+probes: data/hotpotqa-attnrank-profile/dataset.jsonl
+probe_samples: 400
+min_edge_ratio: 1.3
+profile_name: profile-qwen7b-hotpotqa-fig5.json
+engine:
+  device: 0
+  max_sequence: 4096
+  chat_format: plain
+  include_titles: false
+  document_separator: "\n"

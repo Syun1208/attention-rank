@@ -1,0 +1,10 @@
+{
+  "question": "Which country does the composer of the song Nhu Mot Loi Chia Tay come from?",
+  "documents": [
+    {"id": "d1", "title": "Trinh Cong Son", "text": "Trinh Cong Son (1939-2001) was a Vietnamese musician, songwriter, painter and poet, widely considered Vietnam's best songwriter."},
+    {"id": "d2", "title": "Nhu Mot Loi Chia Tay", "text": "Nhu Mot Loi Chia Tay is a song written by Trinh Cong Son in the late 1980s and recorded by Khanh Ly."},
+    {"id": "d3", "title": "Khanh Ly", "text": "Khanh Ly is a Vietnamese singer best known for performing the songs of Trinh Cong Son during the 1960s and 1970s."},
+    {"id": "d4", "title": "Hue", "text": "Hue is a city in central Vietnam that served as the imperial capital of the Nguyen dynasty from 1802 to 1945."},
+    {"id": "d5", "title": "Bolero", "text": "Bolero is a genre of slow-tempo Latin music and its associated dance, originating in Spain and Cuba."}
+  ]
+}

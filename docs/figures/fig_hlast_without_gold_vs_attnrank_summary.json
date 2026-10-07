@@ -1,0 +1,34 @@
+{
+ "layer": 27,
+ "left_column": "Without AttnRank",
+ "right_column": "With AttnRank",
+ "fig_hlast_without_gold_vs_attnrank": {
+  "questions": 509,
+  "before_vs_gold": {
+   "mean_cosine": 0.9020832777023315,
+   "centroid_distance_in_plane": 0.1733688861131668
+  },
+  "after_vs_gold": {
+   "mean_cosine": 0.937684953212738,
+   "centroid_distance_in_plane": 0.09879545122385025
+  },
+  "before_vs_false": {
+   "mean_cosine": 0.9500336647033691,
+   "centroid_distance_in_plane": 0.025952616706490517
+  },
+  "after_vs_false": {
+   "mean_cosine": 0.877099871635437,
+   "centroid_distance_in_plane": 0.2645001709461212
+  },
+  "before_margin_gold_minus_false": -0.047950487583875656,
+  "before_direction": -0.061728231608867645,
+  "after_margin_gold_minus_false": 0.060585107654333115,
+  "after_direction": 0.18240411579608917,
+  "margin_change": {
+   "mean": 0.10853559523820877,
+   "share_of_questions_increasing": 0.9882121807465619,
+   "wilcoxon_p": 2.481289564454077e-84
+  },
+  "cosine_between_before_and_after_state": 0.890462338924408
+ }
+}

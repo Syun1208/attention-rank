@@ -1,0 +1,17 @@
+model: Qwen/Qwen2.5-7B-Instruct
+dataset: data/finqa/dataset.jsonl
+profile: profile-qwen2.5-7b-instruct-finqa-k5.json
+chunks: 5
+strategy: attnrank
+probe_samples: 200
+min_edge_ratio: 1.3
+temperature: 0.0
+top_p: 0.8
+max_new_tokens: 512
+max_retries: 3
+seed: 0
+shard: 0/1
+engine:
+  device: 0
+  max_sequence: 8192
+  chat_format: chatml

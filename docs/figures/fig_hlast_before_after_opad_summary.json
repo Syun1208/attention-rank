@@ -1,0 +1,120 @@
+{
+ "questions_collected": 800,
+ "answered_correctly_with_attnrank": 509,
+ "random": {
+  "questions": 509,
+  "before_vs_gold": {
+   "mean_cosine": 0.9369791746139526,
+   "centroid_distance_in_plane": 0.09360676258802414
+  },
+  "after_vs_gold": {
+   "mean_cosine": 0.937684953212738,
+   "centroid_distance_in_plane": 0.09879545122385025
+  },
+  "before_vs_false": {
+   "mean_cosine": 0.8804959654808044,
+   "centroid_distance_in_plane": 0.2581641376018524
+  },
+  "after_vs_false": {
+   "mean_cosine": 0.877099871635437,
+   "centroid_distance_in_plane": 0.2645001709461212
+  },
+  "before_margin_gold_minus_false": 0.056483134627342224,
+  "before_direction": 0.1760999709367752,
+  "after_margin_gold_minus_false": 0.060585107654333115,
+  "after_direction": 0.18240411579608917,
+  "margin_change": {
+   "mean": 0.004101973958313465,
+   "share_of_questions_increasing": 0.6110019646365422,
+   "wilcoxon_p": 1.0124559923069908e-11
+  },
+  "cosine_between_before_and_after_state": 0.9861594438552856
+ },
+ "descending": {
+  "questions": 509,
+  "before_vs_gold": {
+   "mean_cosine": 0.9406829476356506,
+   "centroid_distance_in_plane": 0.09430011361837387
+  },
+  "after_vs_gold": {
+   "mean_cosine": 0.937684953212738,
+   "centroid_distance_in_plane": 0.09879545122385025
+  },
+  "before_vs_false": {
+   "mean_cosine": 0.8802412748336792,
+   "centroid_distance_in_plane": 0.2621532082557678
+  },
+  "after_vs_false": {
+   "mean_cosine": 0.877099871635437,
+   "centroid_distance_in_plane": 0.2645001709461212
+  },
+  "before_margin_gold_minus_false": 0.06044159457087517,
+  "before_direction": 0.18140125274658203,
+  "after_margin_gold_minus_false": 0.060585107654333115,
+  "after_direction": 0.18240411579608917,
+  "margin_change": {
+   "mean": 0.00014351322897709906,
+   "share_of_questions_increasing": 0.4538310412573674,
+   "wilcoxon_p": 0.2310043058596304
+  },
+  "cosine_between_before_and_after_state": 0.9825416803359985
+ },
+ "without_principle_vs_with_principle_attnrank": {
+  "questions": 509,
+  "before_vs_gold": {
+   "mean_cosine": 0.8293952941894531,
+   "centroid_distance_in_plane": 0.2414647340774536
+  },
+  "after_vs_gold": {
+   "mean_cosine": 0.937684953212738,
+   "centroid_distance_in_plane": 0.09879545122385025
+  },
+  "before_vs_false": {
+   "mean_cosine": 0.7810368537902832,
+   "centroid_distance_in_plane": 0.32986053824424744
+  },
+  "after_vs_false": {
+   "mean_cosine": 0.877099871635437,
+   "centroid_distance_in_plane": 0.2645001709461212
+  },
+  "before_margin_gold_minus_false": 0.048358406871557236,
+  "before_direction": 0.15597759187221527,
+  "after_margin_gold_minus_false": 0.060585107654333115,
+  "after_direction": 0.18240411579608917,
+  "margin_change": {
+   "mean": 0.012226704508066177,
+   "share_of_questions_increasing": 0.6660117878192534,
+   "wilcoxon_p": 1.5622263575376768e-20
+  },
+  "cosine_between_before_and_after_state": 0.8957573771476746
+ },
+ "without_gold_vs_attnrank": {
+  "questions": 509,
+  "before_vs_gold": {
+   "mean_cosine": 0.9020832777023315,
+   "centroid_distance_in_plane": 0.1733688861131668
+  },
+  "after_vs_gold": {
+   "mean_cosine": 0.937684953212738,
+   "centroid_distance_in_plane": 0.09879545122385025
+  },
+  "before_vs_false": {
+   "mean_cosine": 0.9500336647033691,
+   "centroid_distance_in_plane": 0.025952616706490517
+  },
+  "after_vs_false": {
+   "mean_cosine": 0.877099871635437,
+   "centroid_distance_in_plane": 0.2645001709461212
+  },
+  "before_margin_gold_minus_false": -0.047950487583875656,
+  "before_direction": -0.061728231608867645,
+  "after_margin_gold_minus_false": 0.060585107654333115,
+  "after_direction": 0.18240411579608917,
+  "margin_change": {
+   "mean": 0.10853559523820877,
+   "share_of_questions_increasing": 0.9882121807465619,
+   "wilcoxon_p": 2.481289564454077e-84
+  },
+  "cosine_between_before_and_after_state": 0.890462338924408
+ }
+}

@@ -1,0 +1,178 @@
+{
+  "questions": 7368,
+  "output_correct": 4647,
+  "output_wrong": 2721,
+  "layer": 27,
+  "gold_slots_match_evaluated_run": 1.0,
+  "fig_correct_hlast_vs_documents": {
+    "correct_vs_gold": {
+      "mean_cosine": 0.8861555457115173,
+      "centroid_distance_in_plane": 0.16447600722312927,
+      "states": 4647,
+      "documents": 9294
+    },
+    "correct_vs_false": {
+      "mean_cosine": 0.7658847570419312,
+      "centroid_distance_in_plane": 0.4155595898628235,
+      "states": 4647,
+      "documents": 13941
+    },
+    "wrong_vs_gold": {
+      "mean_cosine": 0.8795104622840881,
+      "centroid_distance_in_plane": 0.17419224977493286,
+      "states": 2721,
+      "documents": 5442
+    },
+    "wrong_vs_false": {
+      "mean_cosine": 0.7612519860267639,
+      "centroid_distance_in_plane": 0.42237141728401184,
+      "states": 2721,
+      "documents": 8163
+    },
+    "margin_gold_minus_false": {
+      "correct": 0.12027088552713394,
+      "wrong": 0.1182585209608078
+    },
+    "auroc_margin_predicts_correct": 0.5072004898261194,
+    "auroc_direction_predicts_correct": 0.4817486071202414,
+    "nearest_document_is_gold": {
+      "correct": 0.9154293092317625,
+      "wrong": 0.9077545020213157
+    },
+    "auroc_direction_separates_gold_from_false_documents": 0.8998441717060167
+  },
+  "fig_correct_value_vs_documents": {
+    "correct_vs_gold": {
+      "mean_cosine": 0.8060482144355774,
+      "centroid_distance_in_plane": 0.1454554796218872,
+      "states": 4647,
+      "documents": 9294
+    },
+    "correct_vs_false": {
+      "mean_cosine": 0.6617102026939392,
+      "centroid_distance_in_plane": 0.21577556431293488,
+      "states": 4647,
+      "documents": 13941
+    },
+    "wrong_vs_gold": {
+      "mean_cosine": 0.8002768158912659,
+      "centroid_distance_in_plane": 0.1390443593263626,
+      "states": 2721,
+      "documents": 5442
+    },
+    "wrong_vs_false": {
+      "mean_cosine": 0.65362548828125,
+      "centroid_distance_in_plane": 0.21892715990543365,
+      "states": 2721,
+      "documents": 8163
+    },
+    "margin_gold_minus_false": {
+      "correct": 0.14433787763118744,
+      "wrong": 0.14665131270885468
+    },
+    "auroc_margin_predicts_correct": 0.4934651757718601,
+    "auroc_direction_predicts_correct": 0.4672433132320829,
+    "nearest_document_is_gold": {
+      "correct": 0.8967075532601678,
+      "wrong": 0.8989342153619992
+    },
+    "auroc_direction_separates_gold_from_false_documents": 0.8451265219976791
+  },
+  "fig_correct_entropy": {
+    "first_token": {
+      "mean": {
+        "correct": 0.48512650057460344,
+        "wrong": 0.5794775496116414
+      },
+      "median": {
+        "correct": 0.37494465708732605,
+        "wrong": 0.5219559669494629
+      },
+      "auroc_low_entropy_predicts_correct": 0.5578166990879108,
+      "mann_whitney_p": 5.3654601220839274e-17
+    },
+    "mean_first_8_tokens": {
+      "mean": {
+        "correct": 0.16984874682436013,
+        "wrong": 0.2184670503494026
+      },
+      "median": {
+        "correct": 0.13579659889910545,
+        "wrong": 0.16807554846590733
+      },
+      "auroc_low_entropy_predicts_correct": 0.5641044986641214,
+      "mann_whitney_p": 1.8119825132105047e-20
+    },
+    "top1_probability": {
+      "correct": 0.8282700678803009,
+      "wrong": 0.7943170302407525,
+      "auroc": 0.5523032290673398
+    }
+  },
+  "fig_correct_separability": {
+    "$h_{\\mathrm{last}}$: cos(gold) $-$ cos(false)": {
+      "auroc": 0.5072005293690444,
+      "ci95": [
+        0.4941962684392253,
+        0.5197541043485029
+      ],
+      "questions": 7368
+    },
+    "value: cos(gold) $-$ cos(false)": {
+      "auroc": 0.4934652548577099,
+      "ci95": [
+        0.4784176326774104,
+        0.5071722586378336
+      ],
+      "questions": 7368
+    },
+    "$h_{\\mathrm{last}}$: cos(answer doc) $-$ cos(bridge doc)": {
+      "auroc": 0.5442755842451156,
+      "ci95": [
+        0.5292124857394899,
+        0.5588545860844317
+      ],
+      "questions": 5588
+    },
+    "value: cos(answer doc) $-$ cos(bridge doc)": {
+      "auroc": 0.5769807136388373,
+      "ci95": [
+        0.5614407491037402,
+        0.5916891041513247
+      ],
+      "questions": 5588
+    },
+    "attention share on gold (mean over layers)": {
+      "auroc": 0.4960269641623262,
+      "ci95": [
+        0.48184086082131766,
+        0.509341044955798
+      ],
+      "questions": 7368
+    },
+    "top-1 probability, first token": {
+      "auroc": 0.5523032290673398,
+      "ci95": [
+        0.5368891410247341,
+        0.5642336389040221
+      ],
+      "questions": 7368
+    },
+    "$-$ entropy, first token": {
+      "auroc": 0.5578166990879108,
+      "ci95": [
+        0.5457358557328623,
+        0.5726905418667988
+      ],
+      "questions": 7368
+    },
+    "$-$ mean entropy, first 8 tokens": {
+      "auroc": 0.5641044986641214,
+      "ci95": [
+        0.5514699140109711,
+        0.5766682172188702
+      ],
+      "questions": 7368
+    }
+  }
+}

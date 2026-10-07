@@ -1,0 +1,8 @@
+model: Qwen/Qwen2.5-0.5B-Instruct
+probe_samples: 32
+synthetic_slots: 5
+min_edge_ratio: 1.1
+profile_name: profile-qwen0.5b-synthetic.json
+engine:
+  device: 0
+  max_sequence: 2048
