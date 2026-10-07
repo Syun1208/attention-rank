@@ -516,7 +516,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Hidden states, value outputs and output entropy of HotpotQA prompts, split by whether the recorded output was correct")
     parser.add_argument("--model", default=str(workspace_path(relative="models/qwen2.5-7b-instruct")))
     parser.add_argument("--profile", default=str(workspace_path(relative="profiles/profile-qwen7b-hotpotqa-fig5.json")))
-    parser.add_argument("--dataset", default="data/hotpotqa-attnrank/dataset.jsonl")
+    parser.add_argument("--dataset", default=str(workspace_path(relative="data/hotpotqa-attnrank/dataset.jsonl")))
     parser.add_argument("--outcomes", nargs="+", default=None)
     parser.add_argument("--strategy", default="attnrank")
     parser.add_argument("--layers", default="20,27")

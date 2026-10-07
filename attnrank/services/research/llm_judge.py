@@ -29,7 +29,7 @@ logging.getLogger("LiteLLM Router").setLevel(logging.ERROR)
 
 PROJECT_DIR = Path(__file__).resolve().parents[3]
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "FinQA_ALIGNMENT_JUDGE.md"
-LABELS_PATH = PROJECT_DIR / "data" / "finqa" / "dataset.jsonl"
+LABELS_PATH = workspace_path(relative="data/finqa/dataset.jsonl")
 
 HALLUCINATION_TYPES = {
     "none",

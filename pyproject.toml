@@ -8,7 +8,10 @@ version = "0.1.0"
 description = "AttnRank: attention-basin layer selection, attention profiling and training-free reranking on a CUDA Llama engine"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Pham Long", email = "phamlong12082001@gmail.com" }]
+keywords = ["llm", "reranking", "attention", "rag", "cuda", "position-bias"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: C++",
@@ -16,6 +19,11 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
 ]
 dependencies = ["tqdm>=4.60", "pyyaml>=6.0"]
+
+[project.urls]
+Homepage = "https://github.com/Syun1208/attention-rank"
+Repository = "https://github.com/Syun1208/attention-rank"
+Paper = "https://arxiv.org/abs/2508.05128"
 
 [project.optional-dependencies]
 hub = ["huggingface_hub>=0.23.0", "python-dotenv>=1.0"]
@@ -31,6 +39,7 @@ cmake.version = ">=3.24"
 cmake.build-type = "Release"
 build-dir = "build/pip-{wheel_tag}"
 wheel.packages = ["attnrank"]
+wheel.exclude = ["attnrank/src/**"]
 sdist.exclude = [
   "/build/",
   "/outputs/",

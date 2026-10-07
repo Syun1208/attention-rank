@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
 
@@ -11,6 +12,33 @@ from attnrank.data.sources import DatasetSpec, load_rows
 logger = logging.getLogger(__name__)
 
 ProgressCallback = Callable[[int, int], None]
+DEFAULT_INSTRUCTION = (
+    "Write a high-quality answer for the given question using only the provided search results "
+    "(some of which might be irrelevant)."
+)
+DEFAULT_DOCUMENT_LABEL = "Document [{index}] "
+DEFAULT_DOCUMENT_SEPARATOR = "\n"
+DEFAULT_QUESTION_PREFIX = "Question: "
+DEFAULT_ANSWER_PREFIX = "Answer:"
+
+
+@dataclass(frozen=True, slots=True)
+class PromptTemplate:
+    instruction: str = DEFAULT_INSTRUCTION
+    document_label: str = DEFAULT_DOCUMENT_LABEL
+    document_separator: str = DEFAULT_DOCUMENT_SEPARATOR
+    include_titles: bool = False
+    question_prefix: str = DEFAULT_QUESTION_PREFIX
+    answer_prefix: str = DEFAULT_ANSWER_PREFIX
+
+    def render(self, *, question: str, documents: Sequence[Any]) -> str:
+        blocks = []
+        for index, document in enumerate(documents, start=1):
+            item = ar.make_document(item=document, fallback_id=f"doc-{index}")
+            title = f"{item.title}: " if self.include_titles and item.title else ""
+            blocks.append(self.document_label.format(index=index) + title + item.text)
+        context = self.document_separator.join(blocks)
+        return f"{self.instruction}\n\n{context}\n\n{self.question_prefix}{question}\n{self.answer_prefix}"
 
 
 class AttnRank:
@@ -109,6 +137,32 @@ class AttnRank:
     def prompt(self, *, question: str, documents_by_relevance: Sequence[Any]) -> str:
         ordered = self.rerank(documents_by_relevance=documents_by_relevance)
         return ar.build_prompt(engine=self.engine, question=question, documents=ordered).text
+
+    def format_prompt(
+        self,
+        *,
+        question: str,
+        documents_by_relevance: Sequence[Any],
+        template: PromptTemplate = PromptTemplate(),
+    ) -> str:
+        ordered = self.rerank(documents_by_relevance=documents_by_relevance)
+        return template.render(question=question, documents=ordered)
+
+    def chat_messages(
+        self,
+        *,
+        question: str,
+        documents_by_relevance: Sequence[Any],
+        template: PromptTemplate = PromptTemplate(),
+        system_prompt: str | None = None,
+    ) -> list[dict[str, str]]:
+        content = self.format_prompt(
+            question=question,
+            documents_by_relevance=documents_by_relevance,
+            template=template,
+        )
+        messages = [] if system_prompt is None else [{"role": "system", "content": system_prompt}]
+        return [*messages, {"role": "user", "content": content}]
 
     def document_attention(self, *, question: str, documents: Iterable[Any]) -> list[float]:
         return ar.measure_document_attention(

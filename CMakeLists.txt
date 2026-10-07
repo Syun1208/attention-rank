@@ -22,15 +22,15 @@ find_package(CUDAToolkit REQUIRED)
 find_package(Threads REQUIRED)
 
 add_library(attnrank_lib STATIC
-  src/core.cpp
-  src/checkpoint.cpp
-  src/tokenizer.cpp
-  src/prompt.cpp
-  src/kernels.cu
-  src/model.cpp
-  src/model.cu
-  src/attnrank.cpp
-  src/engine.cpp
+  attnrank/src/core.cpp
+  attnrank/src/checkpoint.cpp
+  attnrank/src/tokenizer.cpp
+  attnrank/src/prompt.cpp
+  attnrank/src/kernels.cu
+  attnrank/src/model.cpp
+  attnrank/src/model.cu
+  attnrank/src/attnrank.cpp
+  attnrank/src/engine.cpp
 )
 
 set_target_properties(attnrank_lib PROPERTIES
@@ -66,7 +66,7 @@ target_compile_options(attnrank_lib PRIVATE
   $<$<COMPILE_LANGUAGE:CXX>:${ATTNRANK_CXX_WARNINGS}>
 )
 
-add_executable(attnrank src/cli.cpp)
+add_executable(attnrank attnrank/src/cli.cpp)
 target_link_libraries(attnrank PRIVATE attnrank_lib)
 target_compile_options(attnrank PRIVATE ${ATTNRANK_CXX_WARNINGS})
 
@@ -84,7 +84,7 @@ if(ATTNRANK_BUILD_PYTHON)
     find_package(pybind11 CONFIG)
   endif()
   if(pybind11_FOUND)
-    pybind11_add_module(_core NO_EXTRAS src/bindings.cpp)
+    pybind11_add_module(_core NO_EXTRAS attnrank/src/bindings.cpp)
     target_link_libraries(_core PRIVATE attnrank_lib)
     set_target_properties(_core PROPERTIES
       LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/python

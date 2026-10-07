@@ -191,7 +191,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--opad-root", default=str(OPAD_ROOT))
     parser.add_argument("--model", default=str(workspace_path(relative="models/qwen2.5-7b-instruct")))
     parser.add_argument("--profile", default=str(workspace_path(relative="profiles/profile-qwen7b-hotpotqa-fig5.json")))
-    parser.add_argument("--dataset", default=str(PROJECT_DIR / "data/hotpotqa-attnrank/dataset.jsonl"))
+    parser.add_argument("--dataset", default=str(workspace_path(relative="data/hotpotqa-attnrank/dataset.jsonl")))
     parser.add_argument("--principle-id", type=int, default=0)
     parser.add_argument("--limit", type=int, default=800)
     parser.add_argument("--device", default="cuda:0")

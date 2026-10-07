@@ -50,13 +50,14 @@ from attnrank.engine import (
     set_log_level,
     synthetic_probe_samples,
 )
-from attnrank.facade import AttnRank
+from attnrank.facade import AttnRank, PromptTemplate
 from attnrank.services.rerank import answer_with_top_k, rerank_top_k
 
 __version__ = "0.1.0"
 
 __all__ = [
     "AttnRank",
+    "PromptTemplate",
     "DatasetSpec",
     "FieldMapping",
     "answer_with_top_k",

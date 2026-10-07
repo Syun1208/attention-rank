@@ -7,7 +7,7 @@ A from-scratch C++/CUDA implementation of AttnRank, the two-stage, training-free
 ## Highlights
 
 - No ML framework at runtime: CUDA, cuBLAS and a C++17 compiler, with a pybind11 module `attnrank._core`.
-- `pip install .` builds the engine and installs the `attnrank` package, the C++ CLI `attnrank` and the Python entry point `attnrank-run`.
+- `pip install attnrank` builds the engine and installs the `attnrank` package, the C++ CLI `attnrank` and the Python entry point `attnrank-run`.
 - Works on top-k documents you already have (any retriever or none): `rerank_top_k` only needs the saved attention profile, the model is needed only to answer.
 - Models load from a local directory or a Hugging Face repo id (`from_pretrained`), datasets from JSONL or the Hugging Face Hub with a column mapping or a custom adapter.
 - One entry point `main.py` with subcommands `profile`, `rerank`, `hotpotqa`, `hotpotqa-report`, `finqa` and `research`, YAML configs in `configs/`, logs in `logs/`, tqdm progress bars.
@@ -16,14 +16,25 @@ A from-scratch C++/CUDA implementation of AttnRank, the two-stage, training-free
 
 Requirements: Linux, Python 3.10+, CUDA 12 or 13 with cuBLAS, CMake 3.24+, a C++17 compiler, one NVIDIA GPU.
 
+From PyPI (https://pypi.org/project/attnrank/):
+
 ```bash
 conda create -n attnrank python=3.12 -y && conda activate attnrank
-pip install '.[hub]'
-pip install '.[research]'
+pip install attnrank
+pip install 'attnrank[hub]'
+pip install 'attnrank[research]'
+python -c "import attnrank as ar; print(ar.__version__)"
+```
+
+From source, for development:
+
+```bash
+git clone https://github.com/Syun1208/attention-rank.git AttnRank && cd AttnRank
+pip install '.[hub,dev]'
 pytest -q
 ```
 
-`pip install` compiles for the GPU found at build time (`CMAKE_CUDA_ARCHITECTURES=native`). Override with `CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=90" pip install .`. The `hub` extra adds `huggingface_hub` and `python-dotenv`, `research` adds torch, transformers, numpy, scipy and matplotlib for the scripts under `attnrank/services/research/`. `pip wheel . -w dist` builds a redistributable wheel for the same CUDA version and architecture.
+The PyPI package is a source distribution, so `pip install` compiles the engine for the GPU found at build time (`CMAKE_CUDA_ARCHITECTURES=native`), which takes a few minutes. Override with `CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=90" pip install attnrank`. In a `uv` managed venv use `uv pip install --python /path/.venv/bin/python attnrank`. The `hub` extra adds `huggingface_hub` and `python-dotenv`, `research` adds torch, transformers, numpy, scipy and matplotlib for the scripts under `attnrank/services/research/`, C++ and CUDA sources sit in `attnrank/src/` with public headers in `include/attnrank/`. `pip wheel attnrank -w dist` builds a redistributable wheel for the same CUDA version and architecture.
 
 Development build without pip:
 
@@ -37,7 +48,7 @@ Environment variables are read from a `.env` file found by walking up from the p
 
 ## Dataset Preparation
 
-Datasets live under `data/` (not committed). Every task accepts either a JSONL file or a Hugging Face dataset written as `hf:<repo>[:<config>]@<split>`.
+Datasets live in the workspace `data/` folder (on this machine `/mnt/HDD4/longpm/AttnRank/data`, never committed): relative paths such as `data/finqa/dataset.jsonl` are looked up there, or set `ATTNRANK_DATA_DIR` / `--data-dir`. Every task accepts either a JSONL file or a Hugging Face dataset written as `hf:<repo>[:<config>]@<split>`.
 
 ```
 data/
@@ -92,6 +103,28 @@ print(scan.table())
 ar.save_attention_profile(profile=scan.profile_for(layer_index=scan.selected_layer), path=Path("profiles/my-profile.json"))
 ```
 
+Serving with vLLM (or any OpenAI-compatible server): the profile does the reordering, `format_prompt` renders the same prompt the engine uses without loading a model, and `chat_messages` wraps it for chat endpoints. Verified against the vLLM quickstart with `LLM.generate`, `LLM.chat`, `vllm serve` plus `/v1/completions` and `/v1/chat/completions`.
+
+```python
+from vllm import LLM, SamplingParams
+
+ranker = ar.AttnRank.from_profile(path=Path("profiles/profile-qwen7b-hotpotqa-fig5.json"))
+llm = LLM(model="Qwen/Qwen2.5-7B-Instruct")
+params = SamplingParams(temperature=0.0, max_tokens=32)
+llm.generate([ranker.format_prompt(question=question, documents_by_relevance=top_k_documents)], params)
+llm.chat([ranker.chat_messages(question=question, documents_by_relevance=top_k_documents)], params)
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
+client.chat.completions.create(
+    model="Qwen/Qwen2.5-7B-Instruct",
+    messages=ranker.chat_messages(question=question, documents_by_relevance=top_k_documents),
+)
+```
+
 All functions take keyword arguments, and configuration lives in frozen dataclasses (`EngineSettings`, `LayerScanSettings`, `ProfileSettings`, `GenerationSettings`). `ar.measure_document_attention` and `ar.measure_attention_by_layer` probe a single prompt, `ar.rerank_baseline` gives the `descending`, `ascending`, `random` and `lim` orders, `ar.detect_chat_format` and `ar.model_config` inspect a checkpoint.
 
 Command line: every task reads `--config configs/<task>/<name>.yaml`, flags override single values, and a copy of the resolved config is written next to the outputs.
@@ -111,7 +144,7 @@ Rerank without a model, from a JSON file holding the top-k list (`{"documents": 
 python main.py rerank --documents docs/examples/top_k_documents.json --profile profiles/profile-qwen7b-hotpotqa-fig5.json
 ```
 
-Paths: logs go to `<workspace>/logs/attnrank_<timestamp>.log`, run folders to `<workspace>/outputs/<date>_<task>.<config>/` and profile names are looked up in `<workspace>/profiles/`. The workspace defaults to the repository root and is changed with `--workspace`, `--log-dir`, `--outputs-dir`, `--profiles-dir`, or the variables `ATTNRANK_WORKSPACE`, `ATTNRANK_LOG_DIR`, `ATTNRANK_OUTPUT_DIR`, `ATTNRANK_PROFILES_DIR` in the environment or `.env`. `output_dir` in a config or `--output-dir` fixes one run's folder.
+Paths: logs go to `<workspace>/logs/attnrank_<timestamp>.log`, run folders to `<workspace>/outputs/<date>_<task>.<config>/` and profile names are looked up in `<workspace>/profiles/`. The workspace defaults to the repository root (on this machine `/mnt/HDD4/longpm/AttnRank`, holding `logs/`, `outputs/`, `profiles/`, `data/` and `models/`) and is changed with `--workspace`, `--log-dir`, `--outputs-dir`, `--profiles-dir`, or the variables `ATTNRANK_WORKSPACE`, `ATTNRANK_LOG_DIR`, `ATTNRANK_OUTPUT_DIR`, `ATTNRANK_PROFILES_DIR`, `ATTNRANK_DATA_DIR` in the environment or `.env`. `output_dir` in a config or `--output-dir` fixes one run's folder.
 
 Shards for several GPUs: `python main.py hotpotqa --config ... --offset 0 --questions 3703` and `--offset 3703`, then `hotpotqa-report` over both record files. FinQA uses `--shard 0/2`, `--shard 1/2` and `--finalize`. Scripts pin `CUDA_VISIBLE_DEVICES`, so edit the `.sh` file to change the GPU and pass extra flags through `"$@"`.
 

@@ -62,7 +62,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Trace per-layer attention on gold vs competing documents for each ordering strategy")
     parser.add_argument("--model", default=str(workspace_path(relative="models/qwen2.5-7b-instruct")))
     parser.add_argument("--profile", default=str(workspace_path(relative="profiles/profile-qwen7b-hotpotqa-fig5.json")))
-    parser.add_argument("--dataset", default="data/hotpotqa-attnrank/dataset.jsonl")
+    parser.add_argument("--dataset", default=str(workspace_path(relative="data/hotpotqa-attnrank/dataset.jsonl")))
     parser.add_argument("--records", default=str(workspace_path(relative="outputs/qwen7b-fig5-shard*.jsonl")))
     parser.add_argument("--questions", type=int, default=400)
     parser.add_argument("--seed", type=int, default=0)

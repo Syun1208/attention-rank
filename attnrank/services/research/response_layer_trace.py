@@ -447,7 +447,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Token-by-layer view of one correct and one wrong AttnRank response")
     parser.add_argument("--model", default=str(workspace_path(relative="models/qwen2.5-7b-instruct")))
     parser.add_argument("--profile", default=str(workspace_path(relative="profiles/profile-qwen7b-hotpotqa-fig5.json")))
-    parser.add_argument("--dataset", default="data/hotpotqa-attnrank/dataset.jsonl")
+    parser.add_argument("--dataset", default=str(workspace_path(relative="data/hotpotqa-attnrank/dataset.jsonl")))
     parser.add_argument("--outcomes", nargs="+", default=None)
     parser.add_argument("--strategy", default="attnrank")
     parser.add_argument("--correct-id", default="5ae12aa6554299422ee99617")

@@ -86,6 +86,10 @@ def build_task_settings(settings_type: type, *, args: argparse.Namespace, keys: 
         changes["output_dir"] = workspace.run_output_dir(name=run_name(args=args))
     if getattr(settings, "profile", None) is not None:
         changes["profile"] = workspace.resolve_profile(path=settings.profile)
+    for key in ("dataset", "probes"):
+        spec = getattr(settings, key, None)
+        if spec is not None and spec.path is not None:
+            changes[key] = replace(spec, path=workspace.resolve_data(path=spec.path))
     settings = replace(settings, **changes)
     logger.info("output dir: %s", settings.output_dir)
     return settings
@@ -173,6 +177,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--log-dir", type=Path, default=None, help="where log files go (default <workspace>/logs)")
     parser.add_argument("--profiles-dir", type=Path, default=None, help="where profile names are looked up")
     parser.add_argument("--outputs-dir", type=Path, default=None, help="parent of per-run output folders")
+    parser.add_argument("--data-dir", type=Path, default=None, help="where relative dataset paths are looked up")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     profile = subparsers.add_parser("profile", help="scan layers on probe prompts and write an attention profile")
@@ -239,6 +244,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         logs_dir=args.log_dir,
         outputs_dir=args.outputs_dir,
         profiles_dir=args.profiles_dir,
+        data_dir=args.data_dir,
     )
     level = logging.DEBUG if args.verbose else logging.INFO
     setup_logging(APP_NAME, log_dir=args.workspace_paths.logs_dir, level=level)

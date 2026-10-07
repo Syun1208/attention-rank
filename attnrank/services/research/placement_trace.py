@@ -391,7 +391,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Layer-wise effect of placing the gold documents at the AttnRank slots versus the least-attended slots")
     parser.add_argument("--model", default=str(workspace_path(relative="models/qwen2.5-7b-instruct")))
     parser.add_argument("--profile", default=str(workspace_path(relative="profiles/profile-qwen7b-hotpotqa-fig5.json")))
-    parser.add_argument("--dataset", default="data/hotpotqa-attnrank/dataset.jsonl")
+    parser.add_argument("--dataset", default=str(workspace_path(relative="data/hotpotqa-attnrank/dataset.jsonl")))
     parser.add_argument("--questions", type=int, default=500)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--dtype", default="float32")
